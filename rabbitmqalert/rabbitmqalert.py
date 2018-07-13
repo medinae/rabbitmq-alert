@@ -126,7 +126,8 @@ class RabbitMQAlert:
             recipients = options["email_to"]
             # add subject as header before message text
             subject_email = options["email_subject"] % (options["host"], options["queue"])
-            text_email = "Subject: %s\n\n%s" % (subject_email, text)
+            
+            text_email = "From: %s\r\nSubject: %s\r\n\r\n%s" % (options["email_from"], subject_email, text)
             server.sendmail(options["email_from"], recipients, text_email)
 
             server.quit()
