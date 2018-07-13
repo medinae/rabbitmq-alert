@@ -8,7 +8,6 @@ import smtplib
 import optionsresolver
 import logger
 
-
 class RabbitMQAlert:
     def __init__(self, log):
         self.log = log
@@ -41,15 +40,17 @@ class RabbitMQAlert:
             self.send_notification(options, "%s: messages = %d > %d" % (queue, messages, total_size))
 
         if consumers_connected_min is not None and consumers < consumers_connected_min:
-            self.send_notification(options, "%s: consumers_connected = %d < %d" % (queue, consumers, consumers_connected_min))
+            self.send_notification(options, "Alert on queue *%s* consumer count: Current Count = %d, Expected Min Count %d" % (queue, consumers, consumers_connected_min))
 
     def check_consumer_conditions(self, options):		
         url = "http://%s:%s/api/consumers" % (options["host"], options["port"])
         data = self.send_request(url, options)
+
         if data is None:
             return
 
         consumers_connected = len(data)
+
         consumers_connected_min = options["default_conditions"].get("consumers_connected")
 
         if consumers_connected is not None and consumers_connected < consumers_connected_min:

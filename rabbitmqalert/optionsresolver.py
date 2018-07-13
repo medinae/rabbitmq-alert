@@ -95,7 +95,7 @@ class OptionsResolver:
     @staticmethod 
     def construct_int_option(cli_arguments, config_file_options, conditions, section_key, key, default_conditions=None):
         try:
-            conditions[key] = getattr(cli_arguments, key) or config_file_options.getint(section_key, key)
+            conditions[key] = config_file_options.getint(section_key, key) or getattr(cli_arguments, key)
         except:
             if default_conditions is not None and key in default_conditions:
                 conditions[key] = default_conditions[key]
