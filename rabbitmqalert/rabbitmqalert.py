@@ -42,7 +42,7 @@ class RabbitMQAlert:
         if consumers_connected_min is not None and consumers < consumers_connected_min:
             self.send_notification(options, "Alert on queue *%s* consumer count: Current Count = %d, Expected Min Count %d" % (queue, consumers, consumers_connected_min))
 
-    def check_consumer_conditions(self, options):		
+    def check_consumer_conditions(self, options):       
         url = "http://%s:%s/api/consumers" % (options["host"], options["port"])
         data = self.send_request(url, options)
 
@@ -111,13 +111,17 @@ class RabbitMQAlert:
         if "email_to" in options and options["email_to"]:
             self.log.info("Sending email notification: \"{0}\"".format(body))
 
-            server = smtplib.SMTP(options["email_server"], 25)
+            server = smtplib.SMTP(options["email_server"] + ':' + options["email_port"])
+            server.ehlo()
 
             if "email_ssl" in options and options["email_ssl"]:
-                server = smtplib.SMTP_SSL(options["email_server"], 465)
+                server = smtplib.SMTP_SSL(options["email_server"], options["email_port"])
+            
+            if "email_tls" in options and options["email_tls"]:
+                server.starttls()
 
             if "email_password" in options and options["email_password"]:
-                server.login(options["email_from"], options["email_password"])
+                server.login(options["email_username"], options["email_password"])
 
             recipients = options["email_to"]
             # add subject as header before message text

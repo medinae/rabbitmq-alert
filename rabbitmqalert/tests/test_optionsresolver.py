@@ -42,8 +42,11 @@ class OptionsResolverTestCase(unittest.TestCase):
             "--email-from", "foo-email-from",
             "--email-subject", "foo-email-subject",
             "--email-server", "foo-email-server",
+            "--email-port", "foo-email-port",
+            "--email-username", "foo-email-username",
             "--email-password", "foo-email-password",
             "--email-ssl", "",
+            "--email-tls", "",
             "--slack-url", "foo-slack-url",
             "--slack-channel", "foo-slack-channel",
             "--slack-username", "foo-slack-username",
@@ -67,6 +70,8 @@ class OptionsResolverTestCase(unittest.TestCase):
         self.assertEquals("foo-email-from", options_result["email_from"])
         self.assertEquals("foo-email-subject", options_result["email_subject"])
         self.assertEquals("foo-email-server", options_result["email_server"])
+        self.assertEquals("foo-email-port", options_result["email_port"])
+        self.assertEquals("foo-email-username", options_result["email_username"])
         self.assertEquals("foo-email-password", options_result["email_password"])
         self.assertEquals(True, options_result["email_ssl"])
         self.assertEquals("foo-slack-url", options_result["slack_url"])
@@ -97,6 +102,8 @@ class OptionsResolverTestCase(unittest.TestCase):
             "--email-from", "foo-email-from",
             "--email-subject", "foo-email-subject",
             "--email-server", "foo-email-server",
+            "--email-port", "foo-email-port",
+            "--email-username", "foo-email-username",
             "--email-password", "foo-email-password",
             "--slack-url", "foo-slack-url",
             "--slack-channel", "foo-slack-channel",
@@ -118,8 +125,11 @@ class OptionsResolverTestCase(unittest.TestCase):
         self.assertEquals("foo-email-from", options_result["email_from"])
         self.assertEquals("foo-email-subject", options_result["email_subject"])
         self.assertEquals("foo-email-server", options_result["email_server"])
+        self.assertEquals("foo-email-port", options_result["email_port"])
+        self.assertEquals("foo-email-username", options_result["email_username"])
         self.assertEquals("foo-email-password", options_result["email_password"])
         self.assertEquals(False, options_result["email_ssl"])
+        self.assertEquals(False, options_result["email_tls"])
         self.assertEquals("foo-slack-url", options_result["slack_url"])
         self.assertEquals("foo-slack-channel", options_result["slack_channel"])
         self.assertEquals("foo-slack-username", options_result["slack_username"])
@@ -174,8 +184,11 @@ class OptionsResolverTestCase(unittest.TestCase):
         self.assertEquals("foo-email-from", options_result["email_from"])
         self.assertEquals("foo-email-subject", options_result["email_subject"])
         self.assertEquals("foo-email-host", options_result["email_server"])
+        self.assertEquals("foo-email-port", options_result["email_port"])
+        self.assertEquals("foo-email-username", options_result["email_username"])
         self.assertEquals("foo-email-password", options_result["email_password"])
         self.assertEquals(True, options_result["email_ssl"])
+        self.assertEquals(True, options_result["email_tls"])
         self.assertEquals("foo-slack-url", options_result["slack_url"])
         self.assertEquals("foo-slack-channel", options_result["slack_channel"])
         self.assertEquals("foo-slack-username", options_result["slack_username"])
@@ -238,8 +251,11 @@ class OptionsResolverTestCase(unittest.TestCase):
         self.assertEquals("foo-email-from", options_result["email_from"])
         self.assertEquals("foo-email-subject", options_result["email_subject"])
         self.assertEquals("foo-email-host", options_result["email_server"])
+        self.assertEquals("foo-email-port", options_result["email_port"])
+        self.assertEquals("foo-email-username", options_result["email_username"])
         self.assertEquals("foo-email-password", options_result["email_password"])
         self.assertEquals(True, options_result["email_ssl"])
+        self.assertEquals(True, options_result["email_tls"])
         self.assertEquals("foo-slack-url", options_result["slack_url"])
         self.assertEquals("foo-slack-channel", options_result["slack_channel"])
         self.assertEquals("foo-slack-username", options_result["slack_username"])
@@ -284,8 +300,11 @@ class OptionsResolverTestCase(unittest.TestCase):
         self.assertEquals("foo-email-from", options_result["email_from"])
         self.assertEquals("foo-email-subject", options_result["email_subject"])
         self.assertEquals("foo-email-host", options_result["email_server"])
+        self.assertEquals("foo-email-port", options_result["email_port"])
+        self.assertEquals("foo-email-username", options_result["email_username"])
         self.assertEquals("foo-email-password", options_result["email_password"])
         self.assertEquals(True, options_result["email_ssl"])
+        self.assertEquals(True, options_result["email_tls"])
         self.assertEquals("foo-slack-url", options_result["slack_url"])
         self.assertEquals("foo-slack-channel", options_result["slack_channel"])
         self.assertEquals("foo-slack-username", options_result["slack_username"])
@@ -354,8 +373,11 @@ class OptionsResolverTestCase(unittest.TestCase):
         self.assertIsNone(options_result["email_from"])
         self.assertIsNone(options_result["email_subject"])
         self.assertIsNone(options_result["email_server"])
+        self.assertIsNone(options_result["email_port"])
+        self.assertIsNone(options_result["email_username"])
         self.assertIsNone(options_result["email_password"])
         self.assertFalse(options_result["email_ssl"])
+        self.assertFalse(options_result["email_tls"])
         self.assertIsNone(options_result["slack_url"])
         self.assertIsNone(options_result["slack_channel"])
         self.assertIsNone(options_result["slack_username"])
@@ -433,8 +455,11 @@ class OptionsResolverTestCase(unittest.TestCase):
                 "from": "foo-email-from",
                 "subject": "foo-email-subject",
                 "host": "foo-email-host",
+                "port": "foo-email-port",
+                "username": "foo-email-username",
                 "password": "foo-email-password",
-                "ssl": "True"
+                "ssl": "True",
+                "tls": "True"
             },
             "Slack": {
                 "url": "foo-slack-url",
@@ -475,8 +500,11 @@ class OptionsResolverTestCase(unittest.TestCase):
                 "from": "foo-email-from",
                 "subject": "foo-email-subject",
                 "host": "foo-email-host",
+                "port": "foo-email-port",
+                "username": "foo-email-username",
                 "password": "foo-email-password",
-                "ssl": "True"
+                "ssl": "True",
+                "tls": "True"
             },
             "Slack": {
                 "url": "foo-slack-url",
@@ -522,8 +550,11 @@ class OptionsResolverTestCase(unittest.TestCase):
                 "from": "foo-email-from",
                 "subject": "foo-email-subject",
                 "host": "foo-email-host",
+                "port": "foo-email-port",
+                "username": "foo-email-username",
                 "password": "foo-email-password",
-                "ssl": "True"
+                "ssl": "True",
+                "tls": "True"
             },
             "Slack": {
                 "url": "foo-slack-url",

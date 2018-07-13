@@ -35,8 +35,11 @@ class OptionsResolver:
         arguments.add_option("--email-from", dest="email_from", help="The sender email address", type="string")
         arguments.add_option("--email-subject", dest="email_subject", help="The email subject", type="string")
         arguments.add_option("--email-server", dest="email_server", help="The hostname or IP address of the mail server", type="string")
+        arguments.add_option("--email-port", dest="email_port", help="The port of the mail server", type="string")
+        arguments.add_option("--email-username", dest="email_username", help="The username for the authentication on the mail server", type="string")
         arguments.add_option("--email-password", dest="email_password", help="The password for the authentication on the mail server", type="string")
         arguments.add_option("--email-ssl", dest="email_ssl", help="Use SSL to send email", action="store_true", default=False)
+        arguments.add_option("--email-tls", dest="email_tls", help="Use TLS to send email", action="store_true", default=False)
         arguments.add_option("--slack-url", dest="slack_url", help="Slack hook URL", type="string")
         arguments.add_option("--slack-channel", dest="slack_channel", help="Slack channel to message to", type="string")
         arguments.add_option("--slack-username", dest="slack_username", help="Sender's Slack username", type="string")
@@ -73,6 +76,8 @@ class OptionsResolver:
         options["email_from"] = cli_arguments.email_from or (config_file_options.get("Email", "from") if config_file_options.has_section("Email") else None)
         options["email_subject"] = cli_arguments.email_subject or (config_file_options.get("Email", "subject") if config_file_options.has_section("Email") else None)
         options["email_server"] = cli_arguments.email_server or (config_file_options.get("Email", "host") if config_file_options.has_section("Email") else None)
+        options["email_port"] = cli_arguments.email_port or (config_file_options.get("Email", "port") if config_file_options.has_section("Email") else None)
+        options["email_username"] = cli_arguments.email_username or (config_file_options.get("Email", "username") if config_file_options.has_section("Email") else None)
         options["email_password"] = cli_arguments.email_password or (config_file_options.get("Email", "password") if config_file_options.has_section("Email") else None)
         options["slack_url"] = cli_arguments.slack_url or (config_file_options.get("Slack", "url") if config_file_options.has_section("Slack") else None)
         options["slack_channel"] = cli_arguments.slack_channel or (config_file_options.get("Slack", "channel") if config_file_options.has_section("Slack") else None)
@@ -83,8 +88,10 @@ class OptionsResolver:
 
         if config_file_options.has_section("Email"):
             options["email_ssl"] = config_file_options.getboolean("Email", "ssl")
+            options["email_tls"] = config_file_options.getboolean("Email", "tls")
         else:
             options["email_ssl"] = cli_arguments.email_ssl
+            options["email_tls"] = cli_arguments.email_tls
 
         # get queue specific condition values if any, else construct from the generic one
         conditions = OptionsResolver.construct_conditions(options, cli_arguments, config_file_options)
