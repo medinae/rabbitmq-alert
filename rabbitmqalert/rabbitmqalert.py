@@ -40,9 +40,10 @@ class RabbitMQAlert:
         if total_size is not None and messages > total_size:
             self.send_notification(options, "%s: messages = %d > %d" % (queue, messages, total_size))
 
-        if consumers_connected_min is not None and consumers < consumers_connected_min:
-            self.send_notification(options, "Alert on queue *%s* | Consumer info : Current count = %d, Expected min count %d" % (queue, consumers, consumers_connected_min))
-            _was_consumer_connected_incident_declared = True
+        if (consumers_connected_min is not None and consumers < consumers_connected_min):
+            if False == self._was_consumer_connection_incident_declared:
+                self.send_notification(options, "Alert on queue *%s* | Consumer info : Current count = %d, Expected min count %d" % (queue, consumers, consumers_connected_min))
+                _was_consumer_connected_incident_declared = True
         elif True == self._was_consumer_connection_incident_declared:
             self.send_notification(options, "Incident on queue *%s* finished. Consumer(s) is/are back. Consumer info : Current count = %d, Expected min count %d" % (queue, consumers, consumers_connected_min))
             self._was_consumer_connection_incident_declared = False
