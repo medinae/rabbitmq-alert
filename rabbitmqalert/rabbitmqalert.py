@@ -11,7 +11,7 @@ import logger
 class RabbitMQAlert:
     def __init__(self, log):
         self.log = log
-        self._was_consumer_connection_incident_declared = False
+        self._alerted_queues = {}
 
     def check_queue_conditions(self, options):
         queue = options["queue"]
@@ -41,12 +41,12 @@ class RabbitMQAlert:
             self.send_notification(options, "%s: messages = %d > %d" % (queue, messages, total_size))
 
         if (consumers_connected_min is not None and consumers < consumers_connected_min):
-            if False == self._was_consumer_connection_incident_declared:
+            if queue not in self._alerted_queues:
                 self.send_notification(options, "Alert on queue *%s* | Consumer info : Current count = %d, Expected min count %d" % (queue, consumers, consumers_connected_min))
-                self._was_consumer_connected_incident_declared = True
-        elif True == self._was_consumer_connection_incident_declared:
+                self._alerted_queues[queue] = [True]
+        elif queue in self._alerted_queues:
             self.send_notification(options, "Incident on queue *%s* finished. Consumer(s) is/are back. Consumer info : Current count = %d, Expected min count %d" % (queue, consumers, consumers_connected_min))
-            self._was_consumer_connection_incident_declared = False
+            del self._alerted_queues[queue]
 
     def check_consumer_conditions(self, options):       
         url = "http://%s:%s/api/consumers" % (options["host"], options["port"])
